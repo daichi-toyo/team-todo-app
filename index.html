@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チーム管理TODOアプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header role="banner">
+        <h1 tabindex="0">チームTODO</h1>
+        <nav role="navigation" aria-label="メインナビゲーション">
+            <button id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="main-nav-list">☰</button>
+            <ul id="main-nav-list">
+                <li><a href="#dashboard" tabindex="0">ダッシュボード</a></li>
+                <li><a href="#tasks" tabindex="0">タスク一覧</a></li>
+                <li><a href="#add" tabindex="0">タスク追加</a></li>
+                <li><a href="#members" tabindex="0">メンバー管理</a></li>
+                <li><a href="#settings" tabindex="0">設定</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="main-content" tabindex="-1">
+        <div id="loading-overlay" class="loading-overlay" aria-live="polite" hidden>
+            <div class="spinner" role="status" aria-label="読み込み中"></div>
+            <div class="loading-text">読み込み中...</div>
+        </div>
+        <section id="dashboard-section">
+            <h2>ダッシュボード</h2>
+            <div class="dashboard-progress">
+                <div class="progress-label">全体の完了率</div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar" id="overall-progress-bar"></div>
+                </div>
+                <div class="progress-percent" id="overall-progress-percent"></div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-card">
+                    <h3>担当者別進捗</h3>
+                    <div id="member-progress-list"></div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>カテゴリ別タスク数</h3>
+                    <div class="pie-chart" id="category-pie-chart"></div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>期限切れタスク</h3>
+                    <div id="overdue-warning"></div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>予定タスク</h3>
+                    <div>今日: <span id="today-count">0</span> 件</div>
+                    <div>今週: <span id="week-count">0</span> 件</div>
+                </div>
+            </div>
+        </section>
+        <section id="add-task-section">
+            <h2>新規タスク追加</h2>
+            <form id="task-form">
+                <input type="text" id="task-title" placeholder="タイトル" required>
+                <textarea id="task-desc" placeholder="説明"></textarea>
+                <input type="date" id="task-deadline">
+                <select id="task-assignee">
+                    <option value="">担当者を選択</option>
+                </select>
+                <select id="task-priority">
+                    <option value="high">高</option>
+                    <option value="medium">中</option>
+                    <option value="low">低</option>
+                </select>
+                <select id="task-category"></select>
+                <input type="text" id="new-category" placeholder="新しいカテゴリを追加">
+                <button type="button" id="add-category-btn">カテゴリ追加</button>
+                <button type="submit" class="btn-primary">追加</button>
+            </form>
+        </section>
+        <section id="tasks-section">
+            <h2>タスク一覧</h2>
+            <div class="category-stats" id="category-stats"></div>
+            <div class="task-filter-bar">
+                <input type="text" id="task-search" placeholder="タイトルで検索">
+                <select id="status-filter">
+                    <option value="all">すべての状態</option>
+                    <option value="completed">完了</option>
+                    <option value="incomplete">未完了</option>
+                </select>
+                <select id="assignee-filter">
+                    <option value="all">すべての担当者</option>
+                </select>
+                <select id="deadline-filter">
+                    <option value="all">すべての期限</option>
+                    <option value="today">今日</option>
+                    <option value="week">今週</option>
+                    <option value="overdue">期限切れ</option>
+                </select>
+                <select id="sort-priority">
+                    <option value="none">優先度で並び替え</option>
+                    <option value="high">高→低</option>
+                    <option value="low">低→高</option>
+                </select>
+                <select id="sort-category">
+                    <option value="none">カテゴリで並び替え</option>
+                </select>
+            </div>
+            <div id="task-list" class="task-list"></div>
+        </section>
+        <section id="members-section">
+            <h2>メンバー管理</h2>
+            <form id="member-form" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+                <input type="text" id="member-name" placeholder="名前" required>
+                <input type="email" id="member-email" placeholder="メールアドレス" required>
+                <input type="text" id="member-role" placeholder="役割">
+                <button type="submit" class="btn-primary">追加</button>
+            </form>
+            <div id="member-list" class="member-list"></div>
+        </section>
+        <section id="settings-section">
+            <h2>設定・データ管理</h2>
+            <div class="settings-form">
+                <h3>外観カスタマイズ</h3>
+                <div class="form-group">
+                    <label>モード</label>
+                    <select id="theme-mode">
+                        <option value="light">ライト</option>
+                        <option value="dark">ダーク</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>カラーテーマ</label>
+                    <select id="color-theme">
+                        <option value="blue">ブルー</option>
+                        <option value="green">グリーン</option>
+                        <option value="purple">パープル</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>フォントサイズ</label>
+                    <input type="range" id="font-size" min="14" max="22" value="16">
+                    <span id="font-size-value">16px</span>
+                </div>
+                <div class="form-group">
+                    <label>カードレイアウト</label>
+                    <select id="card-layout">
+                        <option value="list">リスト表示</option>
+                        <option value="grid">グリッド表示</option>
+                    </select>
+                </div>
+                <hr>
+                <h3>データ管理</h3>
+                <div class="form-group">
+                    <button class="btn-secondary" id="export-json">エクスポート（JSON）</button>
+                    <input type="file" id="import-json" accept="application/json" style="display:none;">
+                    <button class="btn-secondary" id="import-json-btn">インポート（JSON）</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn-secondary" id="backup-data">バックアップ</button>
+                    <button class="btn-secondary" id="restore-data">リストア</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn-secondary" id="load-sample-data">サンプルデータ読み込み</button>
+                </div>
+                <div class="form-group">
+                    <div id="validation-result"></div>
+                </div>
+                <div class="form-group">
+                    <button class="btn-secondary" id="integrity-check-btn">データ整合性チェック</button>
+                    <div id="integrity-result"></div>
+                </div>
+                <h3>同期ログ</h3>
+                <div class="sync-log-area" id="sync-log-area"></div>
+            </div>
+        </section>
+        <div id="empty-state" class="empty-state" hidden>
+            <img src="empty.svg" alt="空の状態" width="120" height="120">
+            <div class="empty-message">まだデータがありません。<br>「追加」ボタンから新しい項目を作成しましょう！</div>
+            <button class="btn-primary" id="empty-add-btn">追加</button>
+        </div>
+        <div id="shortcut-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shortcut-modal-title" hidden>
+            <div class="modal-content">
+                <h2 id="shortcut-modal-title">キーボードショートカット</h2>
+                <ul>
+                    <li><kbd>n</kbd> : 新規タスク追加</li>
+                    <li><kbd>/</kbd> : 検索バーにフォーカス</li>
+                    <li><kbd>Ctrl+S</kbd> : 保存</li>
+                    <li><kbd>?</kbd> : このガイドを開く</li>
+                    <li><kbd>Esc</kbd> : モーダルを閉じる</li>
+                </ul>
+                <button class="btn-secondary" id="close-shortcut-modal">閉じる</button>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html> 

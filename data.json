@@ -1,0 +1,38 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "プロジェクト企画書の作成",
+      "description": "新規プロジェクトの企画書を作成し、要件定義を整理する",
+      "assignee": 1,
+      "priority": "high",
+      "deadline": "2024-02-15",
+      "status": "in-progress",
+      "createdAt": "2024-01-15T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "データベース設計",
+      "description": "ユーザー管理システムのデータベーススキーマを設計する",
+      "assignee": 2,
+      "priority": "medium",
+      "deadline": "2024-02-20",
+      "status": "pending",
+      "createdAt": "2024-01-16T14:30:00.000Z"
+    }
+  ],
+  "members": [
+    {
+      "id": 1,
+      "name": "田中 太郎",
+      "email": "tanaka@example.com",
+      "role": "プロジェクトマネージャー"
+    },
+    {
+      "id": 2,
+      "name": "佐藤 花子",
+      "email": "sato@example.com",
+      "role": "バックエンド開発者"
+    }
+  ]
+} 
