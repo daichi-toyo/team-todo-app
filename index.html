@@ -115,60 +115,36 @@
             <div id="member-list" class="member-list"></div>
         </section>
         <section id="settings-section">
-            <h2>設定・データ管理</h2>
-            <div class="settings-form">
-                <h3>外観カスタマイズ</h3>
-                <div class="form-group">
-                    <label>モード</label>
-                    <select id="theme-mode">
-                        <option value="light">ライト</option>
-                        <option value="dark">ダーク</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>カラーテーマ</label>
-                    <select id="color-theme">
-                        <option value="blue">ブルー</option>
-                        <option value="green">グリーン</option>
-                        <option value="purple">パープル</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>フォントサイズ</label>
-                    <input type="range" id="font-size" min="14" max="22" value="16">
-                    <span id="font-size-value">16px</span>
-                </div>
-                <div class="form-group">
-                    <label>カードレイアウト</label>
-                    <select id="card-layout">
-                        <option value="list">リスト表示</option>
-                        <option value="grid">グリッド表示</option>
-                    </select>
-                </div>
-                <hr>
-                <h3>データ管理</h3>
-                <div class="form-group">
-                    <button class="btn-secondary" id="export-json">エクスポート（JSON）</button>
-                    <input type="file" id="import-json" accept="application/json" style="display:none;">
-                    <button class="btn-secondary" id="import-json-btn">インポート（JSON）</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn-secondary" id="backup-data">バックアップ</button>
-                    <button class="btn-secondary" id="restore-data">リストア</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn-secondary" id="load-sample-data">サンプルデータ読み込み</button>
-                </div>
-                <div class="form-group">
-                    <div id="validation-result"></div>
-                </div>
-                <div class="form-group">
-                    <button class="btn-secondary" id="integrity-check-btn">データ整合性チェック</button>
-                    <div id="integrity-result"></div>
-                </div>
-                <h3>同期ログ</h3>
-                <div class="sync-log-area" id="sync-log-area"></div>
-            </div>
+            <h2>設定</h2>
+            <form id="settings-form">
+                <fieldset>
+                    <legend>外観カスタマイズ</legend>
+                    <div class="form-group">
+                        <label for="theme-mode">テーマモード</label>
+                        <select id="theme-mode" name="theme-mode">
+                            <option value="light">ライト</option>
+                            <option value="dark">ダーク</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="theme-color">カラーテーマ</label>
+                        <select id="theme-color" name="theme-color">
+                            <option value="blue">ブルー</option>
+                            <option value="green">グリーン</option>
+                            <option value="pink">ピンク</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="font-size">フォントサイズ</label>
+                        <select id="font-size" name="font-size">
+                            <option value="normal">標準</option>
+                            <option value="large">大きい</option>
+                            <option value="xlarge">特大</option>
+                        </select>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn-primary">保存</button>
+            </form>
         </section>
         <div id="empty-state" class="empty-state" hidden>
             <img src="empty.svg" alt="空の状態" width="120" height="120">

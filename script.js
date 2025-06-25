@@ -627,6 +627,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 初期化時に同期ログ描画 ---
     renderSyncLog();
+
+    // ===== 外観カスタマイズ（テーマ・カラー・フォントサイズ） =====
+    const THEME_KEY = 'todo_theme_mode';
+    const COLOR_KEY = 'todo_theme_color';
+    const FONT_KEY = 'todo_font_size';
+
+    function applyThemeSettings() {
+        const mode = localStorage.getItem(THEME_KEY) || 'light';
+        const color = localStorage.getItem(COLOR_KEY) || 'blue';
+        const font = localStorage.getItem(FONT_KEY) || 'normal';
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-blue', 'theme-green', 'theme-pink', 'font-large', 'font-xlarge');
+        document.body.classList.add(`theme-${mode}`);
+        document.body.classList.add(`theme-${color}`);
+        if (font === 'large') document.body.classList.add('font-large');
+        else if (font === 'xlarge') document.body.classList.add('font-xlarge');
+    }
+
+    function initSettingsForm() {
+        const form = document.getElementById('settings-form');
+        if (!form) return;
+        // 初期値セット
+        form['theme-mode'].value = localStorage.getItem(THEME_KEY) || 'light';
+        form['theme-color'].value = localStorage.getItem(COLOR_KEY) || 'blue';
+        form['font-size'].value = localStorage.getItem(FONT_KEY) || 'normal';
+        // フォントサイズ表示（もしスライダー型なら）
+        // 保存ボタン
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const mode = form['theme-mode'].value;
+            const color = form['theme-color'].value;
+            const font = form['font-size'].value;
+            localStorage.setItem(THEME_KEY, mode);
+            localStorage.setItem(COLOR_KEY, color);
+            localStorage.setItem(FONT_KEY, font);
+            applyThemeSettings();
+            showToast('外観設定を保存しました');
+        });
+    }
+
+    applyThemeSettings();
+    initSettingsForm();
 });
 
 function renderDashboard() {
