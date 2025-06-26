@@ -1,3 +1,4 @@
+/* キャッシュクリア用 - 2024年更新 */
 body {
     --main-color: #667eea;
     --accent-color: #f1c40f;
@@ -6,7 +7,7 @@ body {
     --card-bg: #fff;
     --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
     font-size: 16px;
-    background-color: #e6f3ff;
+    background-color: #ffcccc; /* 明るいピンクに変更 - キャッシュクリア確認用 */
     color: #333;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
