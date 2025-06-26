@@ -140,6 +140,8 @@ function enrichCategory(cat) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 既存の初期化処理の前に閉じるボタンのイベントリスナーを必ず付与
+    document.getElementById('close-shortcut-modal')?.addEventListener('click', closeShortcutModal);
     // --- タスク管理 ---
     const taskForm = document.getElementById('task-form');
     const taskList = document.getElementById('task-list');
