@@ -846,14 +846,49 @@ function openShortcutModal() {
     const modal = document.getElementById('shortcut-modal');
     if (!modal) return;
     modal.hidden = false;
-    modal.querySelector('button').focus();
+    // フォーカスを最初のフォーカス可能要素に
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length) focusable[0].focus();
+    // フォーカストラップ用フラグ
+    modal.setAttribute('data-open', 'true');
 }
 function closeShortcutModal() {
     const modal = document.getElementById('shortcut-modal');
     if (!modal) return;
     modal.hidden = true;
+    modal.removeAttribute('data-open');
 }
 document.getElementById('close-shortcut-modal')?.addEventListener('click', closeShortcutModal);
+// モーダル外クリックで閉じる
+const shortcutModal = document.getElementById('shortcut-modal');
+if (shortcutModal) {
+    shortcutModal.addEventListener('mousedown', function(e) {
+        if (e.target === shortcutModal) {
+            closeShortcutModal();
+        }
+    });
+    // フォーカストラップ
+    shortcutModal.addEventListener('keydown', function(e) {
+        if (shortcutModal.hidden) return;
+        if (e.key === 'Tab') {
+            const focusable = shortcutModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    last.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    first.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+}
 
 // --- キーボードショートカット ---
 document.addEventListener('keydown', e => {
